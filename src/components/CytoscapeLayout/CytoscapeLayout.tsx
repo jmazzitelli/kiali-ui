@@ -104,6 +104,7 @@ export default class CytoscapeLayout extends React.Component<CytoscapeLayoutProp
 
       for (let i = 0; i < nodesToBadge.length; i++) {
         new GraphBadge.CircuitBreakerBadge(nodesToBadge[i]).buildBadge();
+        new GraphBadge.MessageBadge(nodesToBadge[i]).buildBadge();
       }
     });
 

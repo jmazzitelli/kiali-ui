@@ -20,8 +20,12 @@ class GraphBadge {
     const div = document.createElement('div');
     div.className = this.badgeType;
     div.style.color = this.badgeColor;
-    // div.style.zIndex = '0';
-    document.getElementById('cy')!.appendChild(div);
+    div.style.zIndex = '3';
+    div.style.position = 'absolute';
+    this.node
+      .cy()
+      .container()
+      .children[0].appendChild(div);
 
     const setScale = () => {
       const zoom = this.node.cy().zoom();
@@ -30,8 +34,23 @@ class GraphBadge {
 
     const popper = this.node.popper({
       content: target => div,
+      renderedPosition: element => {
+        // This offset is already added by cytoscape-popper, but we want
+        // to considerate a different position, so we should remove it.
+        // https://github.com/cytoscape/cytoscape.js-popper/blob/master/src/bb.js#L9
+        const offset = element
+          .cy()
+          .container()
+          .getBoundingClientRect();
+        const position = this.node.renderedPosition();
+        const zoom = this.node.cy().zoom();
+        const zoomedWidth = div.clientWidth * zoom;
+        const zoomedHeight = div.clientHeight * zoom;
+
+        return { x: position.x - offset.left - zoomedWidth, y: position.y - offset.top - zoomedHeight };
+      },
       popper: {
-        positionFixed: true,
+        positionFixed: false,
         modifiers: {
           offset: { offset: '50' },
           inner: { enabled: true },
