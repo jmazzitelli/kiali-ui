@@ -44,15 +44,12 @@ class GraphBadge {
           .getBoundingClientRect();
         const position = this.node.renderedPosition();
         const zoom = this.node.cy().zoom();
-        const zoomedWidth = div.clientWidth * zoom;
-        const zoomedHeight = div.clientHeight * zoom;
 
-        return { x: position.x - offset.left - zoomedWidth, y: position.y - offset.top - zoomedHeight };
+        return { x: position.x - offset.left + 4 * zoom, y: position.y - offset.top - 15 * zoom };
       },
       popper: {
         positionFixed: false,
         modifiers: {
-          offset: { offset: '50' },
           inner: { enabled: true },
           preventOverflow: {
             enabled: true,
