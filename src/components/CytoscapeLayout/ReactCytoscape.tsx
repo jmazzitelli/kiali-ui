@@ -6,6 +6,8 @@ import coseBilkent from 'cytoscape-cose-bilkent';
 import klay from 'cytoscape-klay';
 import popper from 'cytoscape-popper';
 import { PfColors } from '../../components/Pf/PfColors';
+import { KialiAppState } from '../../store/Store';
+import { connect } from 'react-redux';
 
 cytoscape.use(cycola);
 cytoscape.use(dagre);
@@ -13,11 +15,22 @@ cytoscape.use(coseBilkent);
 cytoscape.use(klay);
 cytoscape.use(popper);
 
-/**
- * A React Cytoscape wrapper.
- * props : style, elements, layout, cyRef, styleContainer, cytoscapeOptions, containerID
- */
-class ReactCytoscape extends Component<any, any> {
+interface ReactCytoscapeProps {
+  containerID?: string; // the div ID that contains the cy graph
+  elements?: any; // defines all the nodes, edges, and groups - this is the low-level graph data
+  style?: any;
+  styleContainer?: any;
+  cytoscapeOptions?: any;
+  layout?: any;
+  cyRef?: (cy: any) => void; // to be called when cy graph is initially created
+}
+
+// Allow Redux to map sections of our global app state to our props
+const mapStateToProps = (state: KialiAppState) => ({
+  graphData: state.serviceGraphDataState.graphData
+});
+
+class ReactCytoscape extends Component<ReactCytoscapeProps, any> {
   cy: any;
   container: any;
 
@@ -146,4 +159,5 @@ class ReactCytoscape extends Component<any, any> {
   }
 }
 
-export default ReactCytoscape;
+const ReactCytoscapeConnected = connect(mapStateToProps, null)(ReactCytoscape);
+export default ReactCytoscapeConnected;
