@@ -1,5 +1,5 @@
 /* tslint:disable */
-/* I DON'T KNOW HOW TO GET THE SERVICE GRAPH PAGE FROM WRAPPER NOW THAT WE NEED PROVIDER AT THE ROOT
+/* I DON'T KNOW HOW TO GET THE SERVICE GRAPH PAGE FROM WRAPPER NOW THAT WE NEED PROVIDER AT THE ROOT */
 
 import * as React from 'react';
 import { shallow } from 'enzyme';
@@ -21,7 +21,11 @@ const PARAMS: GraphParamsType = {
 describe('ServiceGraphPage test', () => {
   it('should propagate filter params change with correct value', () => {
     const onParamsChangeFn = jest.fn();
-    const wrapper = shallow(<Provider store={store}><ServiceGraphPage {...PARAMS} onParamsChange={onParamsChangeFn} /></Provider>);
+    const wrapper = shallow(
+      <Provider store={store}>
+        <ServiceGraphPage {...PARAMS} onParamsChange={onParamsChangeFn} />
+      </Provider>
+    );
 
     const serviceGraph = wrapper.childAt(0) as ServiceGraphPage; // TODO
     const newLayout: Layout = { name: 'Cola' };
@@ -46,4 +50,4 @@ describe('ServiceGraphPage test', () => {
   });
 });
 
-*/
+/* */
