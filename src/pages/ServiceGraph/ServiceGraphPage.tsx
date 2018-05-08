@@ -9,9 +9,6 @@ import CytoscapeLayout from '../../components/CytoscapeLayout/CytoscapeLayout';
 import GraphFilter from '../../components/GraphFilter/GraphFilter';
 import PfContainerNavVertical from '../../components/Pf/PfContainerNavVertical';
 import { computePrometheusQueryInterval } from '../../services/Prometheus';
-import { KialiAppState } from '../../store/Store';
-import { connect } from 'react-redux';
-import { ServiceGraphDataActions } from '../../actions/ServiceGraphDataActions';
 
 type ServiceGraphPageState = {
   summaryData?: SummaryData | null;
@@ -27,7 +24,7 @@ type ServiceGraphPageProps = GraphParamsType & {
 };
 const NUMBER_OF_DATAPOINTS = 30;
 
-export class ServiceGraphPage extends React.Component<ServiceGraphPageProps, ServiceGraphPageState> {
+export default class ServiceGraphPage extends React.Component<ServiceGraphPageProps, ServiceGraphPageState> {
   constructor(props: ServiceGraphPageProps) {
     super(props);
 
@@ -166,18 +163,3 @@ export class ServiceGraphPage extends React.Component<ServiceGraphPageProps, Ser
     });
   };
 }
-
-const mapStateToProps = (state: KialiAppState) => ({
-  graphTimestamp: state.serviceGraphDataState.timestamp,
-  graphData: state.serviceGraphDataState.graphData,
-  isLoading: state.serviceGraphDataState.isLoading,
-  isReady: !state.serviceGraphDataState.isLoading
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-  fetchGraphData: (namespace: Namespace, graphDuration: Duration) =>
-    dispatch(ServiceGraphDataActions.fetchGraphData(namespace, graphDuration))
-});
-
-const ServiceGraphPageConnected = connect(mapStateToProps, mapDispatchToProps)(ServiceGraphPage);
-export default ServiceGraphPageConnected;

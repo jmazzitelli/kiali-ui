@@ -9,8 +9,8 @@ import { Duration, Layout, BadgeStatus } from '../../../types/GraphFilter';
 import Namespace from '../../../types/Namespace';
 
 import ServiceGraphPage from '../ServiceGraphPage';
-import store from '../../../store/ConfigStore';
-import { Provider } from 'react-redux';
+
+const dummyFunction = () => 0;
 
 const PARAMS: GraphParamsType = {
   namespace: { name: 'itsio-system' },
@@ -22,12 +22,18 @@ describe('ServiceGraphPage test', () => {
   it('should propagate filter params change with correct value', () => {
     const onParamsChangeFn = jest.fn();
     const wrapper = shallow(
-      <Provider store={store}>
-        <ServiceGraphPage {...PARAMS} onParamsChange={onParamsChangeFn} />
-      </Provider>
+      <ServiceGraphPage
+        {...PARAMS}
+        onParamsChange={onParamsChangeFn}
+        fetchGraphData={dummyFunction}
+        graphTimestamp={'0'}
+        graphData={[]}
+        isLoading={false}
+        isReady={true}
+      />
     );
 
-    const serviceGraph = wrapper.childAt(0) as ServiceGraphPage; // TODO
+    const serviceGraph = wrapper.instance() as ServiceGraphPage;
     const newLayout: Layout = { name: 'Cola' };
     serviceGraph.handleLayoutChange(newLayout); // simulate layout change
     const EXPECT1 = Object.assign({}, PARAMS, { graphLayout: newLayout });
